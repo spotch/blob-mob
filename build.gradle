@@ -99,6 +99,10 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     }
+
+    dependencies {
+		compile "com.google.inject:guice:3.0"
+    }
 }
 
 tasks.eclipse.doLast {
