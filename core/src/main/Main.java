@@ -12,14 +12,16 @@ import com.google.inject.Inject;
 public class Main implements IMain {
 
 	private ShaderProgram _shader;
+	private OrthographicCamera _camera;
 
 	private float[] _verts;
 	private Mesh _mesh;
-	private OrthographicCamera _camera;
 
 	@Inject
-	public Main(ShaderProgram shader) {
+	public Main(ShaderProgram shader,
+			OrthographicCamera camera) {
 		_shader = shader;
+		_camera = camera;
 	}
 
 	@Override
@@ -29,8 +31,6 @@ public class Main implements IMain {
 		_mesh = new Mesh(true, 3, 0, new VertexAttribute(Usage.Position, 2, "a_position"), new VertexAttribute(
 				Usage.Color, 4, "a_color"));
 		_mesh.setVertices(_verts);
-
-		_camera = new OrthographicCamera();
 	}
 
 	@Override

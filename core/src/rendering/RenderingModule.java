@@ -1,5 +1,6 @@
 package rendering;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
@@ -13,6 +14,7 @@ public class RenderingModule extends AbstractModule {
 		bindConstant().annotatedWith(Names.named("shaderPedantic")).to(false);
 
 		bind(ShaderProgram.class).toProvider(ShaderProvider.class);
+		bind(OrthographicCamera.class).toProvider(CameraProvider.class);
 	}
 
 }
