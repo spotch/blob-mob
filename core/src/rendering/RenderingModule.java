@@ -1,10 +1,10 @@
-package shader;
+package rendering;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 
-public class ShaderModule extends AbstractModule {
+public class RenderingModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
