@@ -2,6 +2,7 @@ package game.blobmob;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,19 +20,12 @@ public class BlobMob extends ApplicationAdapter {
 	private OrthographicCamera _camera;
 
 	private ShaderProgram createShader() {
-		String vertShader = "attribute vec2 a_position;\n"
-				+ "attribute vec4 a_color;\n"
-				+ "uniform mat4 u_projTrans;\n"
-				+ "varying vec4 vColor;\n"
-				+ "void main() {\n"
-				+ "	vColor = a_color;\n"
-				+ "	gl_Position =  u_projTrans * vec4(a_position.xy, 0.0, 1.0);\n"
-				+ "}";
-		String fragShader = "#ifdef GL_ES\n" + "precision mediump float;\n"
-				+ "#endif\n" + "varying vec4 vColor;\n" + "void main() {\n"
-				+ "	gl_FragColor = vColor;\n" + "}";
+		FileHandle vertexShader = Gdx.files.internal("shaders/vertex.shader");
+		FileHandle fragmentShader = Gdx.files.internal("shaders/fragment.shader");
+
 		ShaderProgram.pedantic = false;
-		ShaderProgram shader = new ShaderProgram(vertShader, fragShader);
+		ShaderProgram shader = new ShaderProgram(vertexShader.readString(),
+				fragmentShader.readString());
 		String log = shader.getLog();
 		if (!shader.isCompiled())
 			throw new GdxRuntimeException(log);
@@ -43,11 +37,8 @@ public class BlobMob extends ApplicationAdapter {
 	@Override
 	public void create() {
 		Injector injector = Guice.createInjector(new BlobMobModule());
-		_verts = new float[] {
-			0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f
-		};
+		_verts = new float[] { 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+				1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f };
 		_mesh = new Mesh(true, 3, 0, new VertexAttribute(Usage.Position, 2,
 				"a_position"), new VertexAttribute(Usage.Color, 4, "a_color"));
 		_mesh.setVertices(_verts);
