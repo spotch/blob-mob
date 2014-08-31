@@ -2,55 +2,56 @@ package main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class Main implements IMain {
 
-	private ShaderProgram _shader;
-	private OrthographicCamera _camera;
+	private FitViewport _viewport;
+	private SpriteBatch _spriteBatch;
+	private Texture _cannon;
+	private Texture _background;
 
-	private float[] _verts;
-	private Mesh _mesh;
+	float _screenWidth, _screenHeight;
+	float _cannonWidth, _cannonHeight;
 
 	@Inject
-	public Main(ShaderProgram shader,
-			OrthographicCamera camera) {
-		_shader = shader;
-		_camera = camera;
+	public Main(SpriteBatch spriteBatch,
+			@Named("ScreenWidth") float screenWidth,
+			@Named("ScreenHeight") float screenHeight,
+			@Named("CannonWidth") float cannonWidth,
+			@Named("CannonHeight") float cannonHeight) {
+		_spriteBatch = spriteBatch;
+
+		_screenWidth = screenWidth;
+		_screenHeight = screenHeight;
+
+		_cannonWidth = cannonWidth;
+		_cannonHeight = cannonHeight;
 	}
 
 	@Override
 	public void create() {
-		_verts = new float[] { 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-				1.0f, 1.0f, 0.0f, 1.0f };
-		_mesh = new Mesh(true, 3, 0, new VertexAttribute(Usage.Position, 2, "a_position"), new VertexAttribute(
-				Usage.Color, 4, "a_color"));
-		_mesh.setVertices(_verts);
+		_viewport = new FitViewport(1280, 1024);
+		_background = new Texture(Gdx.files.internal("images/background.png"));
+		_cannon = new Texture(Gdx.files.internal("images/cannon.png"));
 	}
 
 	@Override
 	public void resize(int width, int height) {
-
+		_viewport.update(width, height);
 	}
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0.1f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glDepthMask(false);
-		Gdx.gl.glEnable(GL20.GL_BLEND);
-		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		_camera.setToOrtho(false, 1.0f, 1.0f);
-		_shader.begin();
-		_shader.setUniformMatrix("u_projTrans", _camera.combined);
-		_mesh.render(_shader, GL20.GL_TRIANGLES, 0, 3);
-		_shader.end();
-		Gdx.gl.glDepthMask(true);
+		_spriteBatch.begin();
+		_spriteBatch.draw(_background, 0, 0, 1280, 1024);
+		_spriteBatch.draw(_cannon, 10, 10, 128, 128);
+		_spriteBatch.end();
 	}
 
 	@Override
@@ -60,12 +61,9 @@ public class Main implements IMain {
 
 	@Override
 	public void resume() {
-
 	}
 
 	@Override
 	public void dispose() {
-		_mesh.dispose();
-		_shader.dispose();
 	}
 }
