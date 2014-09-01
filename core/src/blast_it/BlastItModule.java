@@ -16,7 +16,10 @@ public class BlastItModule extends AbstractModule {
 		Texture backgroundTexture = new Texture(Gdx.files.internal("images/background.png"));
 		bind(Texture.class).annotatedWith(Names.named("BackgroundTexture")).toInstance(backgroundTexture);
 
-		install(new FactoryModuleBuilder().implement(Cannon.class, Cannon.class).build(ICannonFactory.class));
+		install(new FactoryModuleBuilder().implement(Cannon.class, Cannon.class).build(CannonFactory.class));
+
+		bind(Float.class).annotatedWith(Names.named("CannonWidth")).toInstance(new Float(128.0f));
+		bind(Float.class).annotatedWith(Names.named("CannonHeight")).toInstance(new Float(128.0f));
 	}
 
 }

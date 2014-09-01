@@ -1,5 +1,5 @@
 package blast_it;
 
-public interface ICannonFactory {
+public interface CannonFactory {
 	public Cannon create();
 }

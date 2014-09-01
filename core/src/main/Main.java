@@ -1,7 +1,8 @@
 package main;
 
 import blast_it.Background;
-import blast_it.ICannonFactory;
+import blast_it.Cannon;
+import blast_it.CannonFactory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,12 +13,12 @@ public class Main implements IMain {
 
 	private Stage _stage;
 	private Background _background;
-	private ICannonFactory _cannonFactory;
+	private CannonFactory _cannonFactory;
 
 	@Inject
 	public Main(Stage stage,
 			Background background,
-			ICannonFactory cannonFactory) {
+			CannonFactory cannonFactory) {
 		_stage = stage;
 		_background = background;
 		_cannonFactory = cannonFactory;
@@ -27,7 +28,9 @@ public class Main implements IMain {
 	public void create() {
 		Gdx.input.setInputProcessor(_stage);
 		_stage.addActor(_background);
-		_stage.addActor(_cannonFactory.create());
+		Cannon cannon = _cannonFactory.create();
+		cannon.setCenterPosition(1280/2, 256/2);
+		_stage.addActor(cannon);
 	}
 
 	@Override
