@@ -9,8 +9,6 @@ public class MainModule extends AbstractModule {
 	protected void configure() {
 		bind(IMain.class).to(Main.class);
 
-		bind(Float.class).annotatedWith(Names.named("ScreenWidth")).toInstance(new Float(1280.0f));
-		bind(Float.class).annotatedWith(Names.named("ScreenHeight")).toInstance(new Float(1024.0f));
 		bind(Float.class).annotatedWith(Names.named("CannonWidth")).toInstance(new Float(128.0f));
 		bind(Float.class).annotatedWith(Names.named("CannonHeight")).toInstance(new Float(128.0f));
 	}
