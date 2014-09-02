@@ -10,7 +10,7 @@ public class Cannon extends Actor {
 
 	private Texture _texture;
 
-	float _width, _height;
+	Float _width, _height;
 
 	@Inject
 	public Cannon(@Named("CannonTexture") Texture texture,
@@ -25,6 +25,7 @@ public class Cannon extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		batch.draw(_texture, getX(), getY(), getWidth(), getHeight());
+		batch.draw(_texture, getX(), getY(), 64.0f, 64.0f, getWidth(), getHeight(), getScaleX(),
+				getScaleY(), getRotation(), 0, 0, 256, 256, false, false);
 	}
 }

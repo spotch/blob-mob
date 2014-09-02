@@ -20,6 +20,15 @@ public class BlastItModule extends AbstractModule {
 
 		bind(Float.class).annotatedWith(Names.named("CannonWidth")).toInstance(new Float(128.0f));
 		bind(Float.class).annotatedWith(Names.named("CannonHeight")).toInstance(new Float(128.0f));
+
+		bind(Float.class).annotatedWith(Names.named("CannonRotationAmount")).toInstance(new Float(100.0f));
+
+		install(new FactoryModuleBuilder().implement(ICannonInput.class, CannonInput.class).build(ICannonInputFactory.class));
+
+		bind(Float.class).annotatedWith(Names.named("MinCannonRotation")).toInstance(new Float(-50.0f));
+		bind(Float.class).annotatedWith(Names.named("MaxCannonRotation")).toInstance(new Float(50.0f));
+
+		bind(ICannonRotationBounder.class).to(CannonRotationBounder.class);
 	}
 
 }
